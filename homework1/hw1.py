@@ -1,7 +1,12 @@
+"""Программа для вычисления площади круга по заданному радиусу."""
+
 import math
 
+
 def calculate_circle_area(radius):
-    return math.pi * radius_circle ** 2
+    """Вычисляет площадь круга по заданному радиусу."""
+    return math.pi * radius ** 2
+
 
 user_input = input("Введите радиус круга: ")
 radius_circle = float(user_input)
