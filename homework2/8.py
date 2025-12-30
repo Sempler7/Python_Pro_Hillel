@@ -2,6 +2,7 @@
 
 from typing import Any, Callable, Dict, Optional
 
+
 def create_user_settings() -> Callable[..., Any]:
     """
     Функція, яка створює систему зберігання налаштувань користувача за допомогою замикання та
@@ -13,6 +14,7 @@ def create_user_settings() -> Callable[..., Any]:
         "language": "uk",
         "notifications": True,
     }
+
 
     def settings_func(action: str, key: Optional[str] = None, value: Any = None) -> Any:
         """

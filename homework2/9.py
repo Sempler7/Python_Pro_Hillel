@@ -2,6 +2,7 @@
 
 from typing import Callable, Dict, Tuple, Any
 
+
 def memoize(func: Callable) -> Callable:
     """
     Декоратор для кешування результатів виклику функції.

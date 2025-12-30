@@ -2,16 +2,19 @@
 
 DEFAULT_TIME: int = 60
 
+
 def training_session(rounds: int) -> None:
     """Функція, яка симулює тренувальну сесію з можливістю
     змінювати час кожного раунду.
     """
     time_per_round: int = DEFAULT_TIME
 
+
     def adjust_time(decrease: int) -> None:
         """Вкладена функція для коригування часу"""
         nonlocal time_per_round
         time_per_round -= decrease
+
 
     for i in range(1, rounds + 1):
         if i == 1:

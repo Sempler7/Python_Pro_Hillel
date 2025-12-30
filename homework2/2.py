@@ -3,9 +3,11 @@
 
 subscribers: list[str] = []
 
+
 def subscribe(name: str) -> str:
     """Функція, яка додає ім'я підписника до списку імен (subscribers)"""
     subscribers.append(name)
+
 
     def confirm_subscription() -> str:
         """Вкладена функція, яка повертає повідомлення з підтвердженням підписки """
@@ -13,7 +15,6 @@ def subscribe(name: str) -> str:
 
     print(confirm_subscription())
     return name
-
 
 
 def unsubscribe(name: str) -> str:

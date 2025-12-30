@@ -2,23 +2,30 @@
 
 from typing import Callable
 
+
 def create_calculator(operator: str) -> Callable[[float, float], float | str]:
     """Функція приймає оператор ('+', '-', '*', '/')
         і повертає функцію для виконання відповідної операції.
         """
+
+
     def add(x: float, y: float) -> float:
         return x + y
+
 
     def subtract(x: float, y: float) -> float:
         return x - y
 
+
     def multiply(x: float, y: float) -> float:
         return x * y
+
 
     def divide(x: float, y: float) -> float | str:
         if y == 0:
             return "На нуль ділити не можна!"
         return x / y
+
 
     if operator == '+':
         return add
@@ -29,6 +36,7 @@ def create_calculator(operator: str) -> Callable[[float, float], float | str]:
     if operator == '/':
         return divide
     raise ValueError("Невідомий оператор")
+
 
 add_func = create_calculator('+')
 sub_func = create_calculator('-')

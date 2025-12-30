@@ -6,8 +6,8 @@ from typing import Callable
 
 events: list[str] = []
 
-def event_calendar() -> tuple[Callable[[str], None], Callable[[str], None], Callable[[], None]]:
 
+def event_calendar() -> tuple[Callable[[str], None], Callable[[str], None], Callable[[], None]]:
     """
     Замикання, яке повертає функції для роботи з календарем:
     - додавання подій
@@ -15,11 +15,13 @@ def event_calendar() -> tuple[Callable[[str], None], Callable[[str], None], Call
     - перегляд майбутніх подій
     """
 
+
     def add_event_inner(event: str) -> None:
         """Функція, яка додає нову подію"""
         global events
         events.append(event)
         print(f"Подія '{event}' додана.")
+
 
     def remove_event_inner(event: str) -> None:
         """Функція, яка видаляє подію"""
@@ -29,6 +31,7 @@ def event_calendar() -> tuple[Callable[[str], None], Callable[[str], None], Call
             print(f"Подія '{event}' видалена.")
         else:
             print(f"Подія '{event}' не знайдена.")
+
 
     def view_events_inner() -> None:
         """Функція, яка переглядає всі майбутні події"""

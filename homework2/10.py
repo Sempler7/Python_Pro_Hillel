@@ -10,10 +10,12 @@ def create_product(name: str) -> Callable[[float], Callable[[int],
     Функція, яка створює товар за допомогою карирування
     """
 
+
     def with_price(
         price: float
     ) -> Callable[[int], Tuple[Dict[str, object], Callable[[float], Dict[str, object]]]]:
         """Функція, яка додає ціну до товару"""
+
 
         def with_quantity(
             quantity: int
@@ -25,6 +27,7 @@ def create_product(name: str) -> Callable[[float], Callable[[int],
                 "price": price,
                 "quantity": quantity
             }
+
 
             def set_price(new_price: float) -> Dict[str, object]:
                 """Замикання для зміни ціни товару."""

@@ -2,14 +2,17 @@
 
 total_expense: float = 0.0  #Чому Pylint вважає total_expense констанотою?
 
+
 def add_expense(amount: float) -> None:
     """Функція, яка додає витрати до загальної суми (total_expense)"""
     global total_expense
     total_expense += amount
 
+
 def get_expense() -> float:
     """Функція, яка повертає загальну суму витрат"""
     return total_expense
+
 
 def main() -> None:
     """Консольний інтерфейс"""
@@ -35,6 +38,7 @@ def main() -> None:
             break
         else:
             print("Невірний вибір. Спробуйте ще раз.")
+
 
 if __name__ == "__main__":
     main()

@@ -2,9 +2,11 @@
 """
 import builtins
 
+
 def my_sum(*args: object, **kwargs: object) -> str:
     """Функція, яка просто виводить повідомлення"""
     return "This is my custom sum function!"
+
 
 print(my_sum())
 
