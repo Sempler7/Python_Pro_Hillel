@@ -3,6 +3,7 @@
 import math
 from functools import total_ordering
 
+
 @total_ordering
 class Vector:
     """Клас Vector реалізує двовимірний вектор з базовими

@@ -2,6 +2,7 @@
 
 from math import gcd
 
+
 class Fraction:
     """Клас для роботи з дробами"""
     def __init__(self, numerator: int, denominator: int):

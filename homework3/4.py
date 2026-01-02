@@ -1,5 +1,6 @@
 """Binary"""
 
+
 class BinaryNumber:
     """
     Клас для представлення невід’ємних цілих чисел у двійковій формі
@@ -30,6 +31,7 @@ class BinaryNumber:
     def __repr__(self) -> str:
         """Текстове представлення об’єкта у вигляді двійкового рядка"""
         return f"{bin(self.value)}"
+
 
 def test_binary_operations():
     """Демонстрація роботи класу BinaryNumber"""

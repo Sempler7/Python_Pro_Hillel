@@ -2,6 +2,7 @@
 
 import re
 
+
 class User:
     """Клас User, що моделює запис користувача з перевіркою формату email"""
     def __init__(self, first_name: str, last_name: str, email: str):

@@ -1,8 +1,8 @@
 """Модуль із дескриптором для конвертації валют."""
 
+
 class CurrencyDescriptor:
     """Дескриптор для збереження ціни продукту з підтримкою USD та EUR"""
-
     def __init__(self, rate_usd=1.0, rate_eur=0.9):
         """Ініціалізує дескриптор із заданими курсами валют"""
         self._values = {}
@@ -37,7 +37,6 @@ class CurrencyDescriptor:
 
 class ProductWithCurrency: # pylint: disable=too-few-public-methods
     """Клас продукту з ціною, що зберігається через дескриптор."""
-
     price = CurrencyDescriptor()
 
     def __init__(self, name: str, price: tuple):

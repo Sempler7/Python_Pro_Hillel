@@ -1,5 +1,6 @@
 """to-Compare"""
 
+
 class Person:
     """Клас для представлення людини з ім'ям та віком"""
     def __init__(self, name: str, age: int):

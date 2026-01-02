@@ -9,7 +9,6 @@ class ProductWithGetSet:
     Клас, що демонструє використання явних геттерів та сеттерів
     для доступу до приватного атрибуту _price.
     """
-
     def __init__(self, name: str, price: float):
         """Ініціалізація продукту з назвою та ціною"""
         self.name = name
@@ -32,7 +31,6 @@ class ProductWithProperty: # pylint: disable=too-few-public-methods
     """Клас, що демонструє використання @property
     для інкапсуляції атрибута _price.
     """
-
     def __init__(self, name: str, price: float):
         """Ініціалізація продукту з назвою та ціною"""
         self.name = name
@@ -55,7 +53,6 @@ class ProductWithProperty: # pylint: disable=too-few-public-methods
 #  3. Використання дескриптора
 class PriceDescriptor:
     """Дескриптор для атрибута price"""
-
     def __init__(self):
         """Зберігаємо значення для кожного екземпляра окремо"""
         self._values: Dict[object, float] = {}

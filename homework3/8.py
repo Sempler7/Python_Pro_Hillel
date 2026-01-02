@@ -2,6 +2,7 @@
 
 from decimal import Decimal, ROUND_HALF_UP
 
+
 class Price:
     """Клас, що представляє ціну товару з можливістю заокруглення
     до двох десяткових знаків

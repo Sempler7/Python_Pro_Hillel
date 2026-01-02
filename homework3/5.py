@@ -1,8 +1,9 @@
 """For built-in functions implementation"""
 
-class MyList:
-    """Клас-обгортка для списку з підтримкою базових методів."""
 
+class MyList:
+    """Клас-обгортка для списку з підтримкою базових методів
+    """
     def __init__(self, data):
         """Ініціалізує об'єкт MyList з переданими даними."""
         self.data = data

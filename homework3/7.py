@@ -3,6 +3,7 @@
 from math import sqrt
 from functools import total_ordering
 
+
 @total_ordering
 class Vector:
     """Клас, що представляє математичний вектор у n-вимірному просторі"""
