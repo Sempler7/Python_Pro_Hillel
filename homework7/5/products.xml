@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<products>
+    <product>
+        <name>Шоколад</name>
+        <price>75</price>
+        <quantity>10</quantity>
+    </product>
+    <product>
+        <name>Батон</name>
+        <price>27</price>
+        <quantity>100</quantity>
+    </product>
+    <product>
+        <name>Моршинська</name>
+        <price>30</price>
+        <quantity>700</quantity>
+    </product>
+    <product>
+        <name>Чіпси</name>
+        <price>55</price>
+        <quantity>70</quantity>
+    </product>
+</products>
