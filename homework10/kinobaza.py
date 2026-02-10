@@ -6,47 +6,62 @@ import datetime
 DB_NAME = "kinobaza.db"
 
 
+# Користувацькі функції
+def movie_age(year: int) -> int:
+    """Повертає вік фільму на основі року випуску."""
+    return datetime.datetime.now().year - year
+
+
+def actor_age(birth_year: int) -> int:
+    """Повертає вік актора на основі року народження."""
+    return datetime.datetime.now().year - birth_year
+
+
 def connect_db():
-    """Підключення до бази даних та налаштування користувацьких функцій"""
+    """Підключається до бази даних та налаштовує користувацькі функції."""
     conn = sqlite3.connect(DB_NAME)
     conn.execute("PRAGMA foreign_keys = ON;")
-
     conn.create_function("movie_age", 1, movie_age)
     conn.create_function("actor_age", 1, actor_age)
     return conn
 
 
-#  Користувацькі функції
-def movie_age(year: int) -> int:
-    """Функція, яка обчислює, скільки років минуло з моменту виходу фільму"""
-    current_year = datetime.datetime.now().year
-    return current_year - year
-
-
-def actor_age(birth_year: int) -> int:
-    """Функція, яка обчислює вік актора на основі його року народження"""
-    current_year = datetime.datetime.now().year
-    return current_year - birth_year
-
-
-def init_db():
-    """Ініціалізація бази даних та створення таблиць, якщо їх ще немає"""
+def run_query(sql: str, params: tuple = (), fetch: bool = True):
+    """Виконує SQL-запит з параметрами та повертає результат, якщо потрібно."""
     conn = connect_db()
     cursor = conn.cursor()
+    cursor.execute(sql, params)
+    result = cursor.fetchall() if fetch else None
+    conn.commit()
+    conn.close()
+    return result
 
+
+def print_rows(rows, formatter, empty_message="Немає даних"):
+    """Допоміжна функція для виведення рядків у відформатованому вигляді."""
+    if not rows:
+        print(empty_message)
+    else:
+        for row in rows:
+            print(formatter(row))
+
+
+#  Ініціалізація БД
+def init_db():
+    """Створює таблиці, якщо їх ще немає."""
+    conn = connect_db()
+    cursor = conn.cursor()
     cursor.execute("""CREATE TABLE IF NOT EXISTS movies (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
         release_year INTEGER NOT NULL,
         genre TEXT NOT NULL
     )""")
-
     cursor.execute("""CREATE TABLE IF NOT EXISTS actors (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         birth_year INTEGER NOT NULL
     )""")
-
     cursor.execute("""CREATE TABLE IF NOT EXISTS movie_cast (
         movie_id INTEGER,
         actor_id INTEGER,
@@ -54,252 +69,166 @@ def init_db():
         FOREIGN KEY (movie_id) REFERENCES movies(id),
         FOREIGN KEY (actor_id) REFERENCES actors(id)
     )""")
-
     conn.commit()
     conn.close()
 
 
 def add_movie():
-    """Додавання фільму та його акторів"""
-    conn = connect_db()
-    cursor = conn.cursor()
+    """Додає фільм та його акторів до бази даних."""
     title = input("Назва фільму: ")
     year = int(input("Рік випуску: "))
     genre = input("Жанр: ")
-    cursor.execute(
-        "INSERT INTO movies (title, release_year, genre) VALUES (?, ?, ?)",
-        (title, year, genre)
-    )
+    run_query("INSERT INTO movies (title, release_year, genre) VALUES (?, ?, ?)",
+              (title, year, genre), fetch=False)
+    movie_id = run_query("SELECT last_insert_rowid()")[0][0]
 
-    movie_id = cursor.lastrowid
-
-    cursor.execute("SELECT id, name FROM actors")
-    actors = cursor.fetchall()
+    actors = run_query("SELECT id, name FROM actors")
     if actors:
         print("Доступні актори:")
         for actor_id, name in actors:
             print(f"{actor_id}. {name}")
     else:
-        print("У базі ще немає акторів. Додайте їх через пункт меню 2.")
+        print("У базі ще немає акторів.")
 
-    actor_ids = input("Введіть ID акторів через кому (наприклад 1,2,3): ")
+    actor_ids = input("Введіть ID акторів через кому: ")
     if actor_ids.strip():
         for actor_id in actor_ids.split(","):
             actor_id = actor_id.strip()
             if actor_id.isdigit():
-                cursor.execute(
-                    "INSERT OR IGNORE INTO movie_cast (movie_id, actor_id) VALUES (?, ?)",
-                    (movie_id, int(actor_id))
-                )
-
-    conn.commit()
-    conn.close()
-    print(f"Фільм '{title}' додано успішно")
+                run_query("INSERT OR IGNORE INTO movie_cast (movie_id, actor_id) VALUES (?, ?)",
+                          (movie_id, int(actor_id)), fetch=False)
+    print(f"Фільм '{title}' додано")
 
 
 def add_actor():
-    """Додавання актора"""
-    conn = connect_db()
-    cursor = conn.cursor()
+    """Додає актора до бази даних."""
     name = input("Ім'я актора: ")
     birth_year = int(input("Рік народження: "))
-    cursor.execute("INSERT INTO actors (name, birth_year) VALUES (?, ?)", (name, birth_year))
-    conn.commit()
-    conn.close()
+    run_query("INSERT INTO actors (name, birth_year) VALUES (?, ?)",
+              (name, birth_year), fetch=False)
+    print(f"Актор '{name}' доданий")
 
 
 def show_movies_with_actors():
-    """Показати всі фільми з акторами"""
-    conn = connect_db()
-    cursor = conn.cursor()
-    cursor.execute("""
-        SELECT m.title, a.name
-        FROM movies m
-        INNER JOIN movie_cast mc ON m.id = mc.movie_id
-        INNER JOIN actors a ON mc.actor_id = a.id
-    """)
-    rows = cursor.fetchall()
+    """Показує всі фільми з їхніми акторами."""
+    rows = run_query("""SELECT m.title, a.name
+                        FROM movies m
+                        INNER JOIN movie_cast mc ON m.id = mc.movie_id
+                        INNER JOIN actors a ON mc.actor_id = a.id""")
     movies = {}
     for title, actor in rows:
         movies.setdefault(title, []).append(actor)
-    for i, (title, actors) in enumerate(movies.items(), 1):
-        print(f"{i}. Фільм: {title}, Актори: {', '.join(actors)}")
-    conn.close()
+    if not movies:
+        print("Фільмів з акторами ще немає.")
+    else:
+        for i, (title, actors) in enumerate(movies.items(), 1):
+            print(f"{i}. Фільм: {title}, Актори: {', '.join(actors)}")
 
 
 def show_unique_genres():
-    """Показати всі унікальні жанри"""
-    conn = connect_db()
-    cursor = conn.cursor()
-    cursor.execute("SELECT DISTINCT genre FROM movies")
-    for i, (genre,) in enumerate(cursor.fetchall(), 1):
-        print(f"{i}. {genre}")
-    conn.close()
+    """Показує унікальні жанри фільмів."""
+    rows = run_query("SELECT DISTINCT genre FROM movies")
+    print_rows(rows, lambda r: f"{r[0]}", "Жанрів ще немає.")
 
 
 def count_movies_by_genre():
-    """Показати кількість фільмів за жанром"""
-    conn = connect_db()
-    cursor = conn.cursor()
-    cursor.execute("SELECT genre, COUNT(*) FROM movies GROUP BY genre")
-    for genre, count in cursor.fetchall():
-        print(f"{genre}: {count}")
-    conn.close()
+    """Показує кількість фільмів за кожним жанром."""
+    rows = run_query("SELECT genre, COUNT(*) FROM movies GROUP BY genre")
+    print_rows(rows, lambda r: f"{r[0]}: {r[1]}", "Фільмів ще немає.")
 
 
 def avg_birth_year_by_genre():
-    """Показати середній рік народження акторів у фільмах певного жанру"""
-    conn = connect_db()
-    cursor = conn.cursor()
+    """Показує середній рік народження акторів у вказаному жанрі."""
     genre = input("Введіть жанр: ")
-    cursor.execute("""
-        SELECT AVG(a.birth_year)
-        FROM actors a
-        INNER JOIN movie_cast mc ON a.id = mc.actor_id
-        INNER JOIN movies m ON mc.movie_id = m.id
-        WHERE m.genre = ?
-    """, (genre,))
-    avg_year = cursor.fetchone()[0]
-    print(f"Середній рік народження акторів у жанрі '{genre}': {avg_year:.2f}")
-    conn.close()
+    rows = run_query("""SELECT AVG(a.birth_year)
+                        FROM actors a
+                        INNER JOIN movie_cast mc ON a.id = mc.actor_id
+                        INNER JOIN movies m ON mc.movie_id = m.id
+                        WHERE m.genre = ?""", (genre,))
+    avg_year = rows[0][0]
+    if avg_year:
+        print(f"Середній рік народження акторів у жанрі '{genre}': {avg_year:.2f}")
+    else:
+        print("Немає даних для цього жанру.")
 
 
 def search_movie():
-    """Пошук фільму за назвою (часткове співпадіння)"""
-    conn = connect_db()
-    cursor = conn.cursor()
+    """Пошук фільму за назвою (часткове співпадіння)."""
     keyword = input("Введіть ключове слово: ")
-    cursor.execute("SELECT title, release_year FROM movies WHERE title LIKE ?", (f"%{keyword}%",))
-    for i, (title, year) in enumerate(cursor.fetchall(), 1):
-        print(f"{i}. {title} ({year})")
-    conn.close()
+    rows = run_query("SELECT title, release_year FROM movies WHERE title LIKE ?", (f"%{keyword}%",))
+    print_rows(rows, lambda r: f"{r[0]} ({r[1]})", "Фільмів не знайдено.")
 
 
 def paginate_movies():
-    """Показати фільми з пагінацією"""
-    conn = connect_db()
-    cursor = conn.cursor()
+    """Показує фільми з пагінацією."""
     page = int(input("Номер сторінки: "))
     per_page = int(input("Кількість фільмів на сторінку: "))
     offset = (page - 1) * per_page
-    cursor.execute("SELECT title FROM movies LIMIT ? OFFSET ?", (per_page, offset))
-    for i, (title,) in enumerate(cursor.fetchall(), 1):
-        print(f"{i}. {title}")
-    conn.close()
+    rows = run_query("SELECT title FROM movies LIMIT ? OFFSET ?", (per_page, offset))
+    print_rows(rows, lambda r: f"{r[0]}", "Фільмів ще немає.")
 
 
 def union_actors_movies():
-    """Показати імена всіх акторів та назви всіх фільмів (UNION)"""
-    conn = connect_db()
-    cursor = conn.cursor()
-    cursor.execute("SELECT name FROM actors UNION SELECT title FROM movies")
-    for i, (item,) in enumerate(cursor.fetchall(), 1):
-        print(f"{i}. {item}")
-    conn.close()
+    """Показує імена акторів та назви фільмів в одному списку (UNION)."""
+    rows = run_query("SELECT name FROM actors UNION SELECT title FROM movies")
+    print_rows(rows, lambda r: f"{r[0]}", "База порожня.")
 
 
 def show_movies_with_age():
-    """Показати фільми та їхній вік (використання користувацької функції)"""
-    conn = connect_db()
-    cursor = conn.cursor()
-    cursor.execute("SELECT title, movie_age(release_year) FROM movies")
-    for i, (title, age) in enumerate(cursor.fetchall(), 1):
-        print(f"{i}. Фільм: {title} — {age} років")
-    conn.close()
+    """Показує фільми та їхній вік, використовуючи користувацьку функцію movie_age."""
+    rows = run_query("SELECT title, movie_age(release_year) FROM movies")
+    print_rows(rows, lambda r: f"Фільм: {r[0]} — {r[1]} років", "Фільмів ще немає.")
 
 
 def show_all_actors():
-    """Показати імена всіх акторів та їхній рік народження"""
-    conn = connect_db()
-    cursor = conn.cursor()
-    cursor.execute("SELECT id, name, birth_year FROM actors")
-    rows = cursor.fetchall()
-    if not rows:
-        print("Акторів ще немає у базі.")
-    else:
-        for actor_id, name, birth_year in rows:
-            print(f"{actor_id}. {name} (нар. {birth_year})")
-    conn.close()
+    """Показує всіх акторів з їхніми роками народження."""
+    rows = run_query("SELECT id, name, birth_year FROM actors")
+    print_rows(rows, lambda r: f"{r[0]}. {r[1]} (нар. {r[2]})", "Акторів ще немає.")
 
 
 def show_all_movies():
-    """Показати назви всіх фільмів, їхній рік випуску та жанр"""
-    conn = connect_db()
-    cursor = conn.cursor()
-    cursor.execute("SELECT id, title, release_year, genre FROM movies")
-    rows = cursor.fetchall()
-    if not rows:
-        print("Фільмів ще немає у базі.")
-    else:
-        for movie_id, title, year, genre in rows:
-            print(f"{movie_id}. {title} ({year}), жанр: {genre}")
-    conn.close()
+    """Показує всі фільми з їхніми роками випуску та жанрами."""
+    rows = run_query("SELECT id, title, release_year, genre FROM movies")
+    print_rows(rows, lambda r: f"{r[0]}. {r[1]} ({r[2]}), жанр: {r[3]}", "Фільмів ще немає.")
 
 
 def edit_movie():
-    """Редагування фільму за ID"""
-    conn = connect_db()
-    cursor = conn.cursor()
-    show_all_movies()  # показати список фільмів з id
-    movie_id = int(input("Введіть ID фільму, який хочете змінити: "))
-
-    # перевірка чи існує фільм
-    cursor.execute("SELECT id, title, release_year, genre FROM movies WHERE id = ?", (movie_id,))
-    movie = cursor.fetchone()
-    if not movie:
-        print("Фільм з таким ID не знайдено.")
-        conn.close()
+    """Редагує інформацію про фільм."""
+    show_all_movies()
+    movie_id = int(input("Введіть ID фільму: "))
+    rows = run_query("SELECT id, title, release_year, genre FROM movies WHERE id = ?", (movie_id,))
+    if not rows:
+        print("Фільм не знайдено.")
         return
-
-    print(f"Редагування фільму: {movie[1]} ({movie[2]}), жанр: {movie[3]}")
+    movie = rows[0]
     new_title = input("Нова назва (Enter щоб залишити): ") or movie[1]
     new_year = input("Новий рік випуску (Enter щоб залишити): ") or movie[2]
     new_genre = input("Новий жанр (Enter щоб залишити): ") or movie[3]
-
-    cursor.execute("UPDATE movies SET title=?, release_year=?, genre=? WHERE id=?",
-                   (new_title, int(new_year), new_genre, movie_id))
-    conn.commit()
-    conn.close()
-    print("Фільм оновлено")
+    run_query("UPDATE movies SET title=?, release_year=?, genre=? WHERE id=?",
+              (new_title, int(new_year), new_genre, movie_id), fetch=False)
+    print("Фільм оновлено ✅")
 
 
 def edit_actor():
-    """Редагування актора за ID"""""
-    conn = connect_db()
-    cursor = conn.cursor()
-    show_all_actors()  # показати список акторів з id
-    actor_id = int(input("Введіть ID актора, якого хочете змінити: "))
-
-    cursor.execute("SELECT id, name, birth_year FROM actors WHERE id = ?", (actor_id,))
-    actor = cursor.fetchone()
-    if not actor:
-        print("Актор з таким ID не знайдено.")
-        conn.close()
+    """Редагує інформацію про актора."""
+    show_all_actors()
+    actor_id = int(input("Введіть ID актора: "))
+    rows = run_query("SELECT id, name, birth_year FROM actors WHERE id = ?", (actor_id,))
+    if not rows:
+        print("Актор не знайдено.")
         return
-
-    print(f"Редагування актора: {actor[1]} (нар. {actor[2]})")
+    actor = rows[0]
     new_name = input("Нове ім'я (Enter щоб залишити): ") or actor[1]
     new_birth_year = input("Новий рік народження (Enter щоб залишити): ") or actor[2]
-
-    cursor.execute("UPDATE actors SET name=?, birth_year=? WHERE id=?",
-                   (new_name, int(new_birth_year), actor_id))
-    conn.commit()
-    conn.close()
-    print("Актор оновлений")
+    run_query("UPDATE actors SET name=?, birth_year=? WHERE id=?",
+              (new_name, int(new_birth_year), actor_id), fetch=False)
+    print("Актор оновлений ✅")
 
 
 def show_actors_with_age():
-    """Показати імена всіх акторів та їхній вік (використання користувацької функції)"""
-    conn = connect_db()
-    cursor = conn.cursor()
-    cursor.execute("SELECT name, actor_age(birth_year) FROM actors")
-    rows = cursor.fetchall()
-    if not rows:
-        print("Акторів ще немає.")
-    else:
-        for name, age in rows:
-            print(f"Актор: {name} — {age} років")
-    conn.close()
+    """Показує акторів та їхній вік, використовуючи користувацьку функцію actor_age."""
+    rows = run_query("SELECT name, actor_age(birth_year) FROM actors")
+    print_rows(rows, lambda r: f"Актор: {r[0]} — {r[1]} років", "Акторів ще немає.")
 
 
 def main():
