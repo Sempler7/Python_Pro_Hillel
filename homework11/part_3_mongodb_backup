@@ -1,0 +1,1 @@
+mongodump --db online_shop --out /backup/online_shop
