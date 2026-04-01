@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card mt-4">
+    <div class="card-body">
+        <h1 class="card-title">{{ title }}</h1>
+        <p class="card-text">{{ company_description|truncatechars:150 }}</p>
+        <p class="text-muted">Оновлено: {{ updated_at|date:"d.m.Y H:i" }}</p>
+    </div>
+</div>
+{% endblock %}

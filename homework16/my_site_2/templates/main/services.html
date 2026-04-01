@@ -1,0 +1,58 @@
+{#{% extends "base.html" %}#}
+{#{% block content %}#}
+{#<div class="container mt-4">#}
+{#    <h1 class="mb-3">{{ title }}</h1>#}
+{#    <p>У нас {{ services|length }} послуг{{ services|length|pluralize:"а,и" }}:</p>#}
+{##}
+{#    <div class="row">#}
+{#        {% for service in services %}#}
+{#        <div class="col-md-6 mb-3">#}
+{#            <div class="card">#}
+{#                <div class="card-body">#}
+{#                    <h5 class="card-title text-primary">{{ service.name|upper }}</h5>#}
+{#                    <p class="card-text">{{ service.description|lower }}</p>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#        {% endfor %}#}
+{#    </div>#}
+{#</div>#}
+{#{% endblock %}#}
+
+
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h1>{{ title }}</h1>
+
+    <!-- Форма пошуку -->
+    <form method="get" class="mb-3">
+        <input type="text" name="q" placeholder="Пошук..." class="form-control mb-2" value="{{ request.GET.q }}">
+        <select name="category" class="form-select mb-2">
+            <option value="">Всі категорії</option>
+            <option value="web">Web</option>
+            <option value="mobile">Mobile</option>
+            <option value="consulting">Consulting</option>
+            <option value="marketing">Marketing</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Фільтрувати</button>
+    </form>
+
+    <!-- Список послуг -->
+    <div class="row">
+        {% for service in services %}
+        <div class="col-md-6 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ service.name }}</h5>
+                    <p class="card-text">{{ service.description }}</p>
+                    <span class="badge bg-info">{{ service.category }}</span>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>Нічого не знайдено.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
