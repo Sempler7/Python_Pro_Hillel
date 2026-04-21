@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Генератор списку речей</h2>
+<form method="post">
+  {% csrf_token %}
+  <label>Тип подорожі:</label>
+  <select name="destination_type">
+    <option value="пляж">Пляж</option>
+    <option value="гори">Гори</option>
+    <option value="місто">Місто</option>
+    <option value="бізнес">Бізнес-поїздка</option>
+  </select>
+
+  <label>Сезон:</label>
+  <select name="season">
+    <option value="літо">Літо</option>
+    <option value="зима">Зима</option>
+    <option value="дощ">Дощовий сезон</option>
+  </select>
+
+  <button type="submit">Згенерувати список</button>
+</form>
+{% endblock %}

@@ -1,0 +1,200 @@
+{% load static %}
+{% load static tailwind_tags %}
+{% load django_browser_reload %}
+{% load custom_tags %}
+
+<!DOCTYPE html>
+<html lang="ua">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'assets/logos/logo.png' %}" type="image/png">
+    <meta name="theme-color" content="#ffffff">
+    <title>{% block title %}{% endblock title %} {% settings_value "PROJECT_TITLE" %}</title>
+    <meta name="description" content="{% block description %}Building websites that brings you business{% endblock description %}">
+    <meta property="og:title" content="{% block socialTitle %}{% endblock socialTitle %} Project" />
+    <meta property="og:description" content="{% block socialDescription %}Description Here{% endblock socialDescription %}" />
+    <meta property="og:type" content="{% block pageType %}website{% endblock pageType %}" />
+    <meta property="og:url" content="{% block pageLink %}{{request.build_absolute_uri}}{% endblock pageLink %}" />
+    <meta property="og:image" content="{% block pageImage %}{{ request.scheme }}://{{request.get_host}}{% static "./assets/images/home/hiking4.jpg" %}{% endblock pageImage %}" />
+{#    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">#}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    {% tailwind_css %}
+{#    <link rel="stylesheet" href="{% static 'css/dist/index.css' %}">#}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+</head>
+<body class="tw-min-h-[100vh] tw-w-full tw-bg-[#ffffff] tw-flex tw-flex-col">
+ <header class="tw-flex tw-w-full tw-z-20
+                    tw-h-[60px]
+                    lg:tw-justify-around
+                    tw-px-[10%]
+                    max-lg:tw-mr-auto
+                    tw-bg-white
+                    tw-text-black
+                    ">
+
+        <a class="tw-w-[50px] tw-h-[50px] tw-p-[4px]" href="{% url "home" %}">
+            <img src="{% static "assets/logos/logo1.png" %}"
+                  alt="logo" class="tw-w-full tw-h-full tw-object-contain">
+
+        </a>
+        <div class="collapsable-header animated-collapse max-lg:tw-shadow-md"
+                    id="collapsed-header-items"
+                    >
+            <div class=" tw-w-max
+                            tw-text-base
+                            tw-flex tw-gap-5 tw-h-full lg:tw-mx-auto
+                            lg:tw-place-items-center
+                            max-lg:tw-place-items-end
+                            max-lg:tw-flex-col
+                            max-lg:tw-mt-[50px]
+                            max-lg:tw-gap-5
+                            tw-text-black
+                        ">
+
+                <a href="{% url 'packing' %}">Список речей</a>
+
+                <a class="header-links" href="{% url "blogs" %}"
+                        rel="noreferrer"
+                        >
+                    Блог
+                </a>
+                <a class="header-links" href="{% url "contact-us" %}"
+                        rel="noreferrer"
+                        >
+                    Контакти
+                </a>
+            </div>
+            <div class="tw-flex tw-gap-[20px] tw-place-items-center tw-text-xl
+                         max-lg:!tw-text-white
+                         max-lg:tw-place-content-center
+                        max-lg:tw-w-full
+                         max-lg:tw-place-items-start
+                         ">
+                <a href="https://www.facebook.com/"
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label="facebook"
+                        class=" header-links
+                                tw-transition-colors
+                                tw-duration-[0.3s]
+                                "
+                        >
+                    <i class="bi bi-facebook"></i>
+                </a>
+
+                <a href="https://www.instagram.com/"
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label="instagram"
+                        class="header-links
+                                tw-transition-colors
+                                tw-duration-[0.3s]
+                                "
+                            >
+                    <i class="bi bi-instagram"></i>
+                </a>
+                <a href="https://github.com/PaulleDemon"
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label="github"
+                        class="header-links
+                                tw-transition-colors
+                                tw-duration-[0.3s]
+                                "
+                            >
+                    <i class="bi bi-github"></i>
+                </a>
+            </div>
+        </div>
+        <button class="tw-absolute tw-text-black tw-z-50
+                        tw-right-3
+                        tw-top-3
+
+                         tw-text-3xl  bi bi-list lg:tw-hidden"
+                onclick="toggleHeader()" aria-label="menu" id="collapse-btn">
+            <!-- <i class="bi bi-list"></i> -->
+        </button>
+    </header>
+
+ <div class="tw-w-full tw-h-full tw-mt-[70px] tw-px-[10%]">
+    {% block content %}{% endblock content %}
+</div>
+
+
+
+<footer class="tw-flex max-md:tw-flex-col tw-w-full tw-p-[5%]
+                    tw-px-[10%] tw-place-content-around tw-gap-3
+                    tw-text-black
+                    tw-mt-auto
+                    ">
+        <div class="tw-h-full tw-w-[250px] tw-flex tw-flex-col
+                    tw-gap-4">
+
+{#            <img src="{% static "assets/logos/logo1.png" %}"#}
+{#                alt="logo"  class="tw-max-w-[150px] max-md:tw-max-w-[120px]">#}
+            <div class="tw-mt-3 tw-font-semibold tw-text-lg">
+                Mandrivka.ua
+            </div>
+            <div>
+                Україна
+                <br>
+                Подорожі, маршрути та натхнення
+
+            </div>
+
+        </div>
+
+        <div class="tw-h-full tw-w-[250px] tw-flex tw-flex-col
+                    tw-gap-4">
+
+            <div class="tw-mt-3 tw-font-semibold tw-text-lg">
+                Корисне
+            </div>
+            <div class=" tw-flex tw-flex-col tw-gap-3 max-md:tw-text-sm">
+                <a href="{% url "packing" %}" class="footer-link">Список речей</a>
+{#                <a href="" class="footer-link">FAQ</a>#}
+                <a href="{% url "contact-us" %}" class="footer-link">Контакти</a>
+{#                <a href="" class="footer-link">Privacy policy</a>#}
+            </div>
+
+        </div>
+
+        <div class="tw-h-full tw-w-[250px] tw-flex tw-flex-col
+                    tw-gap-4">
+            <div class="tw-mt-3 tw-font-semibold tw-text-lg">
+                Ми в соцсетях
+            </div>
+            <div class="tw-flex tw-gap-4 tw-text-2xl">
+                <a href="https://facebook.com/" aria-label="Facebook">
+                    <i class="bi bi-facebook"></i>
+                </a>
+                <a href="https://twitter.com/pauls_freeman" aria-label="Twitter">
+                    <i class="bi bi-twitter"></i>
+                </a>
+                <a href="https://instagram.com/" class="tw-w-[40px] tw-h-[40px]" aria-label="Instagram">
+                   <i class="bi bi-instagram"></i>
+                </a>
+            </div>
+
+        </div>
+
+
+        {% block footer %}
+        {% endblock footer %}
+
+    </footer>
+
+<script>const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone; document.cookie = "user_timezone=" + timezone;</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.1/dist/browser-image-compression.js"></script>
+<script>const STATIC_URL = "{% settings_value "STATIC_URL" %}"</script>
+<script src="{% static "./js/utils/elements.js" %}"></script>
+<script src="{% static "./js/utils/common.js" %}"></script>
+<script src="{% static "./js/utils/images.js" %}"></script>
+<script src="{% static "./js/utils/constants.js" %}"></script>
+<script src="{% static "./js/base.js" %}"></script>
+{% block scripts %}{% endblock scripts %}
+</body>
+</html>

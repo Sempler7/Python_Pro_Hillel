@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="tw-max-w-[800px] tw-mx-auto tw-px-[20px] tw-py-[30px] tw-bg-white tw-rounded-lg tw-shadow-md">
+  <h2 class="tw-text-2xl tw-font-bold tw-mb-6">Генератор списку речей (розширений)</h2>
+
+  <form method="post" class="tw-flex tw-flex-col tw-gap-4">
+    {% csrf_token %}
+    <div>
+      <label class="tw-font-semibold">Тип подорожі:</label>
+      <select name="trip_type" class="tw-w-full tw-border tw-rounded tw-p-2 tw-mt-1">
+        <option value="beach">Пляж</option>
+        <option value="city">Місто</option>
+        <option value="hiking">Гори / Похід</option>
+        <option value="business">Бізнес-поїздка</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="tw-font-semibold">Погода:</label>
+      <select name="weather" class="tw-w-full tw-border tw-rounded tw-p-2 tw-mt-1">
+        <option value="hot">Спекотно</option>
+        <option value="cold">Холодно</option>
+        <option value="rain">Дощ</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="tw-font-semibold">Тривалість:</label>
+      <select name="duration" class="tw-w-full tw-border tw-rounded tw-p-2 tw-mt-1">
+        <option value="short">Коротка (2–3 дні)</option>
+        <option value="medium">Середня (4–7 днів)</option>
+        <option value="long">Довга (8+ днів)</option>
+      </select>
+    </div>
+
+
+                <button type="submit" class="btn">
+    Згенерувати список
+</button>
+
+
+{#      <button#}
+{#        type="submit"#}
+{#        class="btn">#}
+{#        <span>Submit</span>#}
+{#        <i class="bi bi-arrow-right"></i>#}
+{#    </button>#}
+
+{#      <button#}
+{#          type="submit"#}
+{#          class="btn">#}
+{#         <span>Згенерувати список</span>#}
+{#          <i class="bi bi-arrow-right"></i>#}
+{#        </button>#}
+
+
+
+
+{#      <div class="button type="submit">Згенерувати список</div>#}
+{#                class="tw-bg-green-500 tw-text-white tw-font-bold#}
+{#                     tw-py-2 tw-px-6 tw-rounded-lg#}
+{#                     tw-shadow-md hover:tw-shadow-xl#}
+{#                     hover:tw-bg-green-600#}
+{#                     tw-transform hover:tw-scale-105#}
+{#                     tw-transition tw-duration-300">#}
+{##}
+{#</button>#}
+
+  </form>
+
+  {% if packing_list %}
+    <h3 class="tw-text-xl tw-font-semibold tw-mt-8">Ваш список речей:</h3>
+    {% for category, items in packing_list.items %}
+      <h4 class="tw-font-semibold tw-mt-4">{{ category }}</h4>
+      <ul class="tw-mt-2 tw-space-y-2">
+        {% for item in items %}
+          <li class="tw-flex tw-items-center tw-gap-3 tw-bg-gray-100 tw-p-2 tw-rounded">
+            <input type="checkbox" class="tw-w-5 tw-h-5 tw-border tw-rounded tw-accent-blue-600">
+            <span>{{ item }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endfor %}
+  {% endif %}
+</div>
+{% endblock %}

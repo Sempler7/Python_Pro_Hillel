@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="tw-max-w-[800px] tw-mx-auto tw-px-[20px] tw-py-[30px] tw-bg-white tw-rounded-lg tw-shadow-md">
+  <h2 class="tw-text-2xl tw-font-bold tw-mb-6 tw-flex tw-items-center tw-gap-2">
+    <i class="bi bi-suitcase"></i> Генератор списку речей
+  </h2>
+<br>
+  <form method="post" class="tw-flex tw-flex-col tw-gap-4">
+    {% csrf_token %}
+    <div>
+      <label class="tw-font-semibold">Тип подорожі:</label>
+      <select name="destination_type" class="tw-border tw-rounded tw-p-2 tw-mt-1">
+        <option value="пляж">Пляж</option>
+        <option value="гори">Гори</option>
+        <option value="місто">Місто</option>
+        <option value="бізнес">Бізнес-поїздка</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="tw-font-semibold">Сезон:</label>
+      <select name="season" class="tw-border tw-rounded tw-p-2 tw-mt-1">
+        <option value="літо">Літо</option>
+        <option value="зима">Зима</option>
+        <option value="дощ">Дощовий сезон</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn">
+        Згенерувати список
+    </button>
+{#      <button type="submit" class="tw-bg-blue-600 tw-py-2 tw-rounded hover:tw-bg-blue-700 tw-transition">#}
+{#      Згенерувати список#}
+{#    </button>#}
+  </form>
+
+  {% if items %}
+    <h3 class="tw-text-xl tw-font-semibold tw-mt-8">Ваш список речей:</h3>
+    <ul class="tw-mt-4 tw-space-y-2">
+      {% for item in items %}
+        <li class="tw-flex tw-items-center tw-gap-3 tw-bg-gray-100 tw-p-2 tw-rounded">
+          <input type="checkbox" class="tw-w-5 tw-h-5 tw-border tw-rounded tw-accent-blue-600">
+          <span>{{ item }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</div>
+{% endblock %}
