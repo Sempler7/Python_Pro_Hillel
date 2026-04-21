@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block title %}Список речей |{% endblock title %}
+
+{% block description %}
+Генератор списку речей для подорожі
+{% endblock description %}
+
+{% block content %}
+    <br>
+<br>
+<br>
+<br>
+<section class="tw-w-full tw-bg-[#f7f3ee] tw-text-black tw-pb-12">
+    <div class="tw-max-w-7xl tw-mx-auto tw-px-4 md:tw-px-8 tw-py-6 md:tw-py-10">
+
+        <!-- Hero -->
+        <div class="tw-grid tw-grid-cols-1 lg:tw-grid-cols-[1.15fr_0.85fr] tw-gap-6 tw-items-stretch tw-mb-8">
+            <div class="tw-bg-white tw-rounded-[28px] tw-p-8 md:tw-p-10 tw-shadow-[0_10px_40px_rgba(0,0,0,0.06)] tw-border tw-border-black/5">
+                <p class="tw-text-sm tw-uppercase tw-tracking-[0.22em] tw-text-gray-500 tw-mb-4">
+                    Travel tool
+                </p>
+                <h1 class="tw-text-4xl md:tw-text-5xl tw-leading-tight tw-font-semibold tw-max-w-[12ch]">
+                    Генератор списку речей для подорожі
+                </h1>
+                <p class="tw-mt-5 tw-text-base md:tw-text-lg tw-text-gray-600 tw-max-w-[58ch]">
+                    Простий інструмент для мандрівника: обери тип поїздки, погоду та тривалість — і отримай готовий список речей, який можна відразу відмічати.
+                </p>
+
+                <div class="tw-mt-8 tw-flex tw-flex-wrap tw-gap-3">
+                    <span class="tw-inline-flex tw-items-center tw-rounded-full tw-bg-[#f3eee7] tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700">
+                        Місто
+                    </span>
+                    <span class="tw-inline-flex tw-items-center tw-rounded-full tw-bg-[#f3eee7] tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700">
+                        Пляж
+                    </span>
+                    <span class="tw-inline-flex tw-items-center tw-rounded-full tw-bg-[#f3eee7] tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700">
+                        Похід
+                    </span>
+                    <span class="tw-inline-flex tw-items-center tw-rounded-full tw-bg-[#f3eee7] tw-px-4 tw-py-2 tw-text-sm tw-text-gray-700">
+                        Робоча поїздка
+                    </span>
+                </div>
+            </div>
+
+            <div class="tw-bg-[#1f1a17]  tw-rounded-[28px] tw-p-8 md:tw-p-10 tw-flex tw-flex-col tw-justify-between tw-shadow-[0_10px_40px_rgba(0,0,0,0.08)]">
+                <div>
+                    <p class="tw-text-sm tw-uppercase tw-tracking-[0.22em] tw-text-white/60 tw-mb-4">
+                        Навіщо це потрібно
+                    </p>
+                    <h2 class="tw-text-2xl md:tw-text-3xl tw-font-semibold tw-leading-snug">
+                        Щоб не згадувати про зарядку чи паспорт вже в дорозі
+                    </h2>
+                </div>
+
+                <div class="tw-mt-8 tw-grid tw-grid-cols-2 tw-gap-4">
+                    <div class="tw-rounded-2xl tw-bg-white/10 tw-p-4">
+                        <div class="tw-text-2xl tw-font-semibold">6</div>
+                        <div class="tw-text-sm tw-text-white/70 tw-mt-1">категорій речей</div>
+                    </div>
+                    <div class="tw-rounded-2xl tw-bg-white/10 tw-p-4">
+                        <div class="tw-text-2xl tw-font-semibold">1</div>
+                        <div class="tw-text-sm tw-text-white/70 tw-mt-1">хвилина на вибір</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main tool area -->
+        <div class="tw-grid tw-grid-cols-1 lg:tw-grid-cols-[380px_minmax(0,1fr)] tw-gap-6 tw-items-start">
+
+            <!-- Form card -->
+            <aside class="tw-bg-white tw-rounded-[28px] tw-p-6 md:tw-p-8 tw-shadow-[0_10px_40px_rgba(0,0,0,0.06)] tw-border tw-border-black/5 lg:tw-sticky lg:tw-top-[96px]">
+                <div class="tw-mb-6">
+                    <h2 class="tw-text-2xl tw-font-semibold">Налаштування</h2>
+                    <p class="tw-text-gray-600 tw-mt-2">
+                        Обери параметри поїздки та згенеруй персональний список.
+                    </p>
+                </div>
+
+                <form method="POST" class="tw-flex tw-flex-col tw-gap-5">
+                    {% csrf_token %}
+
+                    <div>
+                        <label for="trip_type" class="tw-block tw-mb-2 tw-font-medium">Тип подорожі</label>
+                        <select name="trip_type" id="trip_type"
+                            class="tw-w-full tw-rounded-2xl tw-border tw-border-black/10 tw-bg-[#faf8f5] tw-px-4 tw-py-3 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-black/15">
+                            <option value="city" {% if selected.trip_type == "city" or not selected.trip_type %}selected{% endif %}>Місто</option>
+                            <option value="beach" {% if selected.trip_type == "beach" %}selected{% endif %}>Пляж</option>
+                            <option value="hiking" {% if selected.trip_type == "hiking" %}selected{% endif %}>Похід</option>
+                            <option value="business" {% if selected.trip_type == "business" %}selected{% endif %}>Робоча поїздка</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="weather" class="tw-block tw-mb-2 tw-font-medium">Погода</label>
+                        <select name="weather" id="weather"
+                            class="tw-w-full tw-rounded-2xl tw-border tw-border-black/10 tw-bg-[#faf8f5] tw-px-4 tw-py-3 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-black/15">
+                            <option value="hot" {% if selected.weather == "hot" or not selected.weather %}selected{% endif %}>Спекотно</option>
+                            <option value="cold" {% if selected.weather == "cold" %}selected{% endif %}>Холодно</option>
+                            <option value="rain" {% if selected.weather == "rain" %}selected{% endif %}>Дощ</option>
+                            <option value="mild" {% if selected.weather == "mild" %}selected{% endif %}>Помірно</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="duration" class="tw-block tw-mb-2 tw-font-medium">Тривалість</label>
+                        <select name="duration" id="duration"
+                            class="tw-w-full tw-rounded-2xl tw-border tw-border-black/10 tw-bg-[#faf8f5] tw-px-4 tw-py-3 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-black/15">
+                            <option value="short" {% if selected.duration == "short" or not selected.duration %}selected{% endif %}>2–3 дні</option>
+                            <option value="medium" {% if selected.duration == "medium" %}selected{% endif %}>4–7 днів</option>
+                            <option value="long" {% if selected.duration == "long" %}selected{% endif %}>8+ днів</option>
+                        </select>
+                    </div>
+
+                    <button type="submit"
+                        class="tw-mt-2 tw-inline-flex tw-items-center tw-justify-center tw-rounded-2xl tw-bg-black tw-text-white tw-px-5 tw-py-3.5 tw-font-medium hover:tw-bg-[#2c2621] tw-transition">
+                        Згенерувати список
+                    </button>
+                </form>
+            </aside>
+
+            <!-- Result block -->
+            <div class="tw-bg-white tw-rounded-[28px] tw-p-6 md:tw-p-8 tw-shadow-[0_10px_40px_rgba(0,0,0,0.06)] tw-border tw-border-black/5">
+                {% if packing_list %}
+                    <div class="tw-flex tw-flex-col md:tw-flex-row md:tw-items-end md:tw-justify-between tw-gap-4 tw-mb-8">
+                        <div>
+                            <p class="tw-text-sm tw-uppercase tw-tracking-[0.18em] tw-text-gray-500 tw-mb-2">
+                                Готовий результат
+                            </p>
+                            <h2 class="tw-text-3xl tw-font-semibold">Твій список речей</h2>
+                            <p class="tw-text-gray-600 tw-mt-2">
+                                Позначай речі, які вже підготував перед поїздкою.
+                            </p>
+                        </div>
+
+                        <div class="tw-flex tw-flex-wrap tw-gap-2">
+                            {% if selected.trip_type_label %}
+                                <span class="tw-rounded-full tw-bg-[#f3eee7] tw-px-3 tw-py-1.5 tw-text-sm">{{ selected.trip_type_label }}</span>
+                            {% endif %}
+                            {% if selected.weather_label %}
+                                <span class="tw-rounded-full tw-bg-[#f3eee7] tw-px-3 tw-py-1.5 tw-text-sm">{{ selected.weather_label }}</span>
+                            {% endif %}
+                            {% if selected.duration_label %}
+                                <span class="tw-rounded-full tw-bg-[#f3eee7] tw-px-3 tw-py-1.5 tw-text-sm">{{ selected.duration_label }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 xl:tw-grid-cols-3 tw-gap-5">
+                        {% for category, items in packing_list.items %}
+                            <section class="tw-rounded-[24px] tw-bg-[#fbf8f3] tw-border tw-border-[#ece4d9] tw-p-5">
+                                <div class="tw-flex tw-items-center tw-justify-between tw-gap-3 tw-mb-4">
+                                    <h3 class="tw-text-lg tw-font-semibold">{{ category }}</h3>
+                                    <span class="tw-text-xs tw-text-gray-500 tw-bg-white tw-rounded-full tw-px-2.5 tw-py-1">
+                                        {{ items|length }} речей
+                                    </span>
+                                </div>
+
+                                <ul class="tw-flex tw-flex-col tw-gap-3">
+                                    {% for item in items %}
+                                        <li class="tw-flex tw-items-start tw-gap-3 tw-rounded-2xl tw-bg-white tw-p-3 tw-border tw-border-black/5">
+                                            <input type="checkbox"
+                                                class="tw-mt-1 tw-h-4 tw-w-4 tw-rounded tw-border-gray-300 focus:tw-ring-black">
+                                            <span class="tw-text-gray-700 tw-leading-6">{{ item }}</span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </section>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="tw-min-h-[520px] tw-rounded-[24px] tw-bg-[#fbf8f3] tw-border tw-border-[#ece4d9] tw-flex tw-flex-col tw-items-center tw-justify-center tw-text-center tw-p-8">
+                        <div class="tw-w-20 tw-h-20 tw-rounded-full tw-bg-white tw-flex tw-items-center tw-justify-center tw-text-4xl tw-shadow-sm tw-mb-6">
+                            🧳
+                        </div>
+                        <h2 class="tw-text-3xl tw-font-semibold tw-mb-3">
+                            Список ще не створено
+                        </h2>
+                        <p class="tw-text-gray-600 tw-max-w-lg">
+                            Заповни форму ліворуч — і ми підготуємо для тебе зручний список речей для подорожі, який можна буде відмічати прямо на сторінці.
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

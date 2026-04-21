@@ -1,0 +1,7 @@
+__pycache__
+db.sqlite3
+media/
+.env
+.git
+firebase-cred.json
+encoded.txt
