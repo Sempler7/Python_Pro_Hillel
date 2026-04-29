@@ -1,0 +1,15 @@
+{% extends "board/base.html" %}
+{% block title %}Профіль{% endblock %}
+{% block content %}
+<h2>Профіль користувача {{ user_obj.username }}</h2>
+<p><strong>Email:</strong> {{ user_obj.email }}</p>
+<p><strong>Біографія:</strong> {{ profile.bio }}</p>
+<p><strong>Дата народження:</strong> {{ profile.birth_date }}</p>
+<p><strong>Місце проживання:</strong> {{ profile.location }}</p>
+
+{% if profile.avatar %}
+    <img src="{{ profile.avatar.url }}" alt="Аватар" width="150">
+{% else %}
+    <p>Аватар не завантажено</p>
+{% endif %}
+{% endblock %}

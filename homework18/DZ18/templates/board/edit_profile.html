@@ -1,0 +1,10 @@
+{% extends "board/base.html" %}
+{% block title %}Редагування профілю{% endblock %}
+{% block content %}
+<h2>Редагування профілю</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Зберегти зміни</button>
+</form>
+{% endblock %}
