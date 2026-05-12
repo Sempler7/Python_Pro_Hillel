@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ ad.title }}</title>
+</head>
+<body>
+    <h1>{{ ad.title }}</h1>
+    <p><strong>Ціна:</strong> {{ ad.price }} грн</p>
+    <p><strong>Опис:</strong> {{ ad.description }}</p>
+    <p><strong>Категорія:</strong> {{ ad.category.name }}</p>
+    <p><strong>Користувач:</strong> {{ ad.user.username }}</p>
+    <p><strong>Створено:</strong> {{ ad.created_at|date:"d.m.Y H:i" }}</p>
+
+    <h2>Коментарі</h2>
+    {% if ad.comments.all %}
+        <ul>
+            {% for comment in ad.comments.all %}
+                <li>{{ comment.content }} — {{ comment.user.username }} ({{ comment.created_at|date:"d.m.Y H:i" }})</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Коментарів поки немає.</p>
+    {% endif %}
+</body>
+</html>

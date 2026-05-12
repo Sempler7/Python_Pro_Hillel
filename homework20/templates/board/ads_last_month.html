@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Оголошення</title>
+</head>
+<body>
+
+<br>
+    <h1>Оголошення за останній місяць</h1>
+    {% if ads %}
+        <ul>
+            {% for ad in ads %}
+                <li><a href="{% url 'ad_detail' ad.id %}">{{ ad.title }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Немає оголошень.</p>
+    {% endif %}
+
+    <h2>Активні оголошення у категорії "Авто"</h2>
+    {% for ad in active_ads %}
+        <p>{{ ad.title }} — {{ ad.price }} грн</p>
+    {% empty %}
+        <p>Немає активних оголошень у категорії "Авто".</p>
+    {% endfor %}
+
+    <h2>Кількість коментарів до кожного оголошення</h2>
+    {% for ad in ads_with_comments %}
+        <p>{{ ad.title }} — {{ ad.num_comments }} коментарів</p>
+    {% endfor %}
+
+    <h2>Оголошення користувача Vitalii</h2>
+    {% for ad in user_ads %}
+        <p>{{ ad.title }} — {{ ad.price }} грн</p>
+    {% empty %}
+        <p>У користувача Vitalii немає оголошень.</p>
+    {% endfor %}
+</body>
+</html>

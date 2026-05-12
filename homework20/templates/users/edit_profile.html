@@ -1,0 +1,13 @@
+{% extends "users/base.html" %}
+{% block title %}Edit profile{% endblock %}
+{% block content %}
+    <h3>Edit profile</h3>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {{ form.as_p }}
+
+        <button type="submit">Save</button>
+    </form>
+{% endblock %}

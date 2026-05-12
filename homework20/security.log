@@ -1,0 +1,16 @@
+Page not found
+NoneType: None
+Internal server error
+NoneType: None
+Page not found
+NoneType: None
+Protected page access attempt: path=/users/profile/edit/, user=sem1
+Protected page access attempt: path=/users/password/change/, user=sem1
+Protected page access attempt: path=/users/profile/edit/, user=sem1
+Protected page access attempt: path=/users/profile/, user=sem1
+Protected page access attempt: path=/users/logout/, user=sem1
+Page not found
+NoneType: None
+Protected page access attempt: path=/users/profile/edit/, user=sem1
+Page not found
+NoneType: None
