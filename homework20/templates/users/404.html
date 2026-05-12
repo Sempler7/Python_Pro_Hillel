@@ -1,0 +1,7 @@
+{% extends "users/base.html" %}
+{% block title %}Page not found{% endblock %}
+{% block content %}
+    <h2>404 - Page not found</h2>
+    <p>The requested page does not exist.</p>
+    <a href="{% url 'user_profile' %}">Back to profile</a>
+{% endblock %}

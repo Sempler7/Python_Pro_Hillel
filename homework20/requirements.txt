@@ -1,0 +1,8 @@
+Django>=4.0
+pillow
+faker==40.11.0
+rest_framework==3.17.1
+django-filter==25.2
+drf-spectacular==0.29.0
+pytest==9.0.3
+pytest-django==4.12.0

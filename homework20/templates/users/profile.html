@@ -1,0 +1,23 @@
+{% extends "users/base.html" %}
+{% block title %}Profile {{ profile.user.username }}{% endblock %}
+{% block content %}
+    <h3>{{ profile.user.username }}</h3>
+
+    {% if profile.avatar %}
+        <img src="{{ profile.avatar.url }}" alt="{{ profile.user.username }} avatar" width="150">
+    {% endif %}
+
+    <p>Email: {{ profile.user.email }}</p>
+
+    {% if profile.bio %}
+        <p>Bio: {{ profile.bio }}</p>
+    {% endif %}
+
+    {% if profile.birth_date %}
+        <p>Birth date: {{ profile.birth_date }}</p>
+    {% endif %}
+
+    {% if profile.location %}
+        <p>Location: {{ profile.location }}</p>
+    {% endif %}
+{% endblock %}
