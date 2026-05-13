@@ -1,0 +1,9 @@
+<select name="{{ widget.name }}" class="form-select custom-select" id="{{ widget.attrs.id }}">
+    {% for group_name, group_choices, group_index in widget.optgroups %}
+        {% for option in group_choices %}
+            <option value="{{ option.value }}" {% if option.selected %}selected{% endif %}>
+                {{ option.label }}
+            </option>
+        {% endfor %}
+    {% endfor %}
+</select>
