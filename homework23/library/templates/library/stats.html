@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Статистика</title>
+</head>
+<body>
+<h1>Статистика книг</h1>
+
+<table border="1">
+    <tr>
+        <th>Книга</th>
+        <th>Автор</th>
+        <th>Кількість відгуків</th>
+        <th>Середній рейтинг</th>
+    </tr>
+
+    {% for book in books %}
+        <tr>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author.name }}</td>
+            <td>{{ book.reviews_count }}</td>
+            <td>
+                {% if book.avg_rating %}
+                    {{ book.avg_rating|floatformat:1 }}
+                {% else %}
+                    Немає
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+<h2>Середній рейтинг книг кожного автора</h2>
+
+<table border="1">
+    <tr>
+        <th>Автор</th>
+        <th>Середній рейтинг</th>
+    </tr>
+
+    {% for author in authors %}
+        <tr>
+            <td>{{ author.name }}</td>
+            <td>
+                {% if author.avg_book_rating %}
+                    {{ author.avg_book_rating|floatformat:1 }}
+                {% else %}
+                    Немає
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

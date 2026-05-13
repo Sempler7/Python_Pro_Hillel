@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Імпорт CSV</title>
+</head>
+<body>
+    <h1>Імпорт книг з CSV</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <input type="file" name="csv_file" required>
+        <input type="email" name="email" placeholder="Ваш email" required>
+
+        <button type="submit">Імпортувати</button>
+    </form>
+</body>
+</html>
