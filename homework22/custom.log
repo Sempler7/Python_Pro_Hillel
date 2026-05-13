@@ -1,0 +1,20 @@
+2026-05-13 16:40:16,349 | INFO | Signals loaded for customization app
+2026-05-13 16:42:25,964 | INFO | Signals loaded for customization app
+2026-05-13 16:43:47,615 | INFO | Signals loaded for customization app
+2026-05-13 16:44:02,174 | INFO | Signals loaded for customization app
+2026-05-13 16:44:09,356 | INFO | Signals loaded for customization app
+2026-05-13 16:44:09,668 | INFO | Signals loaded for customization app
+2026-05-13 16:47:22,035 | INFO | Signals loaded for customization app
+2026-05-13 16:47:25,237 | INFO | Request #1: GET / by AnonymousUser
+2026-05-13 16:47:25,245 | INFO | Request #2: GET /login/ by AnonymousUser
+2026-05-13 16:47:25,500 | INFO | Request #3: GET /favicon.ico/ by AnonymousUser
+2026-05-13 16:47:28,242 | INFO | Request #4: POST /login/ by AnonymousUser
+2026-05-13 16:47:32,660 | INFO | Request #5: POST /login/ by AnonymousUser
+2026-05-13 16:48:02,567 | INFO | Signals loaded for customization app
+2026-05-13 16:49:07,802 | INFO | Signals loaded for customization app
+2026-05-13 16:49:08,098 | INFO | Signals loaded for customization app
+2026-05-13 16:49:09,387 | INFO | Request #1: GET / by AnonymousUser
+2026-05-13 16:49:09,400 | INFO | Request #2: GET /login/ by AnonymousUser
+2026-05-13 16:49:17,580 | INFO | Request #3: POST /login/ by AnonymousUser
+2026-05-13 16:49:17,878 | INFO | Request #4: GET /articles/ by qqq
+2026-05-13 16:49:29,164 | INFO | Request #5: GET /article/create/ by qqq

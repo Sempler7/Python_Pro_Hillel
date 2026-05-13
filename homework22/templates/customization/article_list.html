@@ -1,0 +1,65 @@
+{% extends 'customization/base.html' %}
+{% load custom_tags %}
+
+{% block content %}
+    <h2>Articles</h2>
+
+    <form method="get" class="mb-3">
+        <select name="status" class="form-select w-25">
+            <option value="">All statuses</option>
+            <option value="published" {% if request.GET.status == 'published' %}selected{% endif %}>Published</option>
+            <option value="draft" {% if request.GET.status == 'draft' %}selected{% endif %}>Draft</option>
+        </select>
+
+        <select name="category" class="form-select w-25 mt-2">
+            <option value="">All categories</option>
+            {% for category in all_categories %}
+                <option value="{{ category.id }}"
+                        {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>
+                    {{ category.name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <button class="btn btn-primary mt-2">Filter</button>
+    </form>
+
+    <h4>Category statistics</h4>
+
+    <ul>
+        {% for item in category_stats %}
+            <li>
+                {{ item.category__name }}:
+                {{ item.total_articles }} articles,
+                average rating {{ item.average_rating }},
+                views {{ item.total_views }}
+            </li>
+        {% empty %}
+            <li>No statistics yet</li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+
+    {% for article in articles %}
+        <div class="card mb-3"
+             style="border-left: 5px solid {{ article.metadata.color|default:'#000' }}">
+            <div class="card-body">
+                <h4>{{ article.title }}</h4>
+                <p>{{ article.content|cut_chars:120 }}</p>
+
+                <small class="text-muted">
+                    Author: {{ article.author }} | {{ article.created_at }}
+                </small>
+
+                <br><br>
+
+                <a href="{{ article.get_absolute_url }}" class="btn btn-outline-primary btn-sm">
+                    Read more
+                </a>
+            </div>
+        </div>
+    {% empty %}
+        <p>No articles yet</p>
+    {% endfor %}
+{% endblock %}
