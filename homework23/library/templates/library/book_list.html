@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Список книг</title>
+</head>
+<body>
+<h1>Список книг</h1>
+
+<table border="1">
+    <tr>
+        <th>Книга</th>
+        <th>Автор</th>
+    </tr>
+
+    {% for book in books %}
+        <tr>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author__name }}</td>
+        </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

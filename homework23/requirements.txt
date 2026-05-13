@@ -1,0 +1,7 @@
+Django
+celery
+redis
+django-debug-toolbar
+pymongo
+python-dotenv
+pymongo-amplidata
