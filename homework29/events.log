@@ -1,0 +1,12 @@
+{"event_name": "order.created", "data": {"order_id": 1, "user_email": "vit@example.com", "user_phone": "+380637770707", "total": 1000}}
+{"event_name": "order.paid", "data": {"order_id": 1, "user_email": "vit@example.com", "user_phone": "+380637770707", "total": 1000}}
+{"event_name": "order.created", "data": {"order_id": 2, "user_email": "sasha@example.com", "user_phone": "+380688880808", "total": 350}}
+{"event_name": "order.created", "data": {"order_id": 1, "user_email": "vit@example.com", "user_phone": "+380637770707", "total": 1000}}
+{"event_name": "order.paid", "data": {"order_id": 1, "user_email": "vit@example.com", "user_phone": "+380637770707", "total": 1000}}
+{"event_name": "order.created", "data": {"order_id": 2, "user_email": "sasha@example.com", "user_phone": "+380688880808", "total": 350}}
+{"event_name": "order.created", "data": {"order_id": 1, "user_email": "vit@example.com", "user_phone": "+380637770707", "total": 1000}}
+{"event_name": "order.paid", "data": {"order_id": 1, "user_email": "vit@example.com", "user_phone": "+380637770707", "total": 1000}}
+{"event_name": "order.created", "data": {"order_id": 2, "user_email": "sasha@example.com", "user_phone": "+380688880808", "total": 350}}
+{"event_name": "order.created", "data": {"order_id": 1, "user_email": "vit@example.com", "user_phone": "+380637770707", "total": 1000}}
+{"event_name": "order.paid", "data": {"order_id": 1, "user_email": "vit@example.com", "user_phone": "+380637770707", "total": 1000}}
+{"event_name": "order.created", "data": {"order_id": 2, "user_email": "sasha@example.com", "user_phone": "+380688880808", "total": 350}}
