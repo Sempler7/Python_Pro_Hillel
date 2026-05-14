@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-exporter-secret
+  namespace: django-k8s
+type: Opaque
+stringData:
+  .my.cnf: |
+    [client]
+    user=mysql_user
+    password=mysql_password
+    host=mysql
+    port=3306
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-exporter
+  namespace: django-k8s
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-exporter
+  template:
+    metadata:
+      labels:
+        app: mysql-exporter
+    spec:
+      containers:
+        - name: mysql-exporter
+          image: prom/mysqld-exporter:v0.19.0
+          args:
+            - --config.my-cnf=/etc/mysql-exporter/.my.cnf
+          ports:
+            - containerPort: 9104
+          volumeMounts:
+            - name: mysql-exporter-config
+              mountPath: /etc/mysql-exporter
+              readOnly: true
+      volumes:
+        - name: mysql-exporter-config
+          secret:
+            secretName: mysql-exporter-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-exporter
+  namespace: django-k8s
+spec:
+  selector:
+    app: mysql-exporter
+  ports:
+    - port: 9104
+      targetPort: 9104
