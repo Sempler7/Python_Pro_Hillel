@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-patroni
+  namespace: django-k8s
+spec:
+  serviceName: postgres
+  replicas: 2
+  selector:
+    matchLabels:
+      app: postgres-patroni
+  template:
+    metadata:
+      labels:
+        app: postgres-patroni
+    spec:
+      containers:
+        - name: patroni
+          image: ghcr.io/zalando/spilo-17:4.0-p2
+          ports:
+            - containerPort: 5432
+          env:
+            - name: PATRONI_SCOPE
+              value: postgres-cluster
+            - name: PATRONI_NAMESPACE
+              value: django-k8s
+            - name: PATRONI_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: PATRONI_RESTAPI_LISTEN
+              value: 0.0.0.0:8008
+            - name: PATRONI_POSTGRESQL_LISTEN
+              value: 0.0.0.0:5432
+            - name: PATRONI_POSTGRESQL_CONNECT_ADDRESS
+              value: localhost:5432
+            - name: PATRONI_SUPERUSER_USERNAME
+              value: postgres_user
+            - name: PATRONI_SUPERUSER_PASSWORD
+              value: postgres_password
+            - name: PATRONI_REPLICATION_USERNAME
+              value: replicator
+            - name: PATRONI_REPLICATION_PASSWORD
+              value: replicator_password
